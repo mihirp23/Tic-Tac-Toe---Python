@@ -11,9 +11,9 @@ board = [['1', '2', '3'],
         ['4', '5', '6'],
         ['7', '8', '9']]
 
-player1_mark = None
-player2_mark = None
-
+# dictionary to hold player's name
+players = [{"name":"player1", "mark":"X"},
+           {"name":"player2", "mark":"O"}]
 
 ##################################################################
 def draw_board():
@@ -22,7 +22,8 @@ def draw_board():
     for i in range (0,3):
         rowstr = ''
         for j in range(0, 3):
-            rowstr += board[i][j]
+            rowstr += '|' + board[i][j]
+        rowstr += '|'
         print(rowstr)
 
 # draw_board()
@@ -32,21 +33,17 @@ def get_player_choice():
 ##################################################################
 # get mark character from the player
 
-    global player1_mark
-    global player2_mark
-    
-    while(True):
-        player1_mark = input("Player 1, enter your mark: ")
-        if (player1_mark != 'X' and player1_mark != 'O'):
-            print("Invalid choice, please try again...")
-            continue
-        else:
-            break
 
-    if player1_mark == 'X':
-        player2_mark = 'O'
-    else:
-        player2_mark = 'X'
+    for i in range(0, 2):
+        players[i]['name'] = input(players[i]['name'] + ", enter your name: ")
+        while (True):
+            mark = input(players[i]['name'] + ", enter your mark: ")
+            if (mark != 'X' and mark != 'O'):
+                print("Invalid choice, please try again...")
+                continue
+            else:
+                players[i]['mark'] = mark
+                break
     
 # get_player_choice()
 
@@ -141,27 +138,31 @@ def main():
     get_player_choice()
     print("Enter a digit from 1 - 9 to mark the spot on board")
 
-    current_player = 'Player 1'
-    current_mark = player1_mark
+    # set current player to the first player
+    current_player = players[0]
+
+    # display the board before game start
+    draw_board()
     while(is_spot_open_on_board()):
-        choice = input(current_player + ", your choice: ")
+        choice = input(current_player['name'] + ", your choice: ")
 
         if is_valid_choice(choice):
-            set_mark_on_board(choice, current_mark)
+            set_mark_on_board(choice, current_player['mark'])
         else:
             print("invalid choice, try again")
             continue
 
         draw_board()
         if is_game_won():
-            print(current_player + ", you are the winner!!!")
+            print(current_player['name'] + ", you are the winner!!!")
             break
-        if current_player == 'Player 1':
-            current_player = 'Player 2'
-            current_mark = player2_mark
+
+        # player taking turns
+        if current_player['name'] == players[0]['name']:
+            current_player = players[1]
         else:
-            current_player = 'Player 1'
-            current_mark = player1_mark
+            current_player = players[0]
+        
 
     print("Game Over")
 
