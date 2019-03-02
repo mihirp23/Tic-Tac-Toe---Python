@@ -1,11 +1,13 @@
 
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 ## Mihir Patel
 ## 2/27/19
 ## File: tictactoe.py
 ## Interactive game of Tic Tac Toe
 ## Python 3
+
+import random
 
 board = [['1', '2', '3'],
         ['4', '5', '6'],
@@ -139,7 +141,10 @@ def main():
     print("Enter a digit from 1 - 9 to mark the spot on board")
 
     # set current player to the first player
-    current_player = players[0]
+    # randomized
+    rand_num = random.randint(0,1)
+    current_player = players[rand_num]
+    print(current_player['name'] + ", you pick first!!!")
 
     # display the board before game start
     draw_board()
